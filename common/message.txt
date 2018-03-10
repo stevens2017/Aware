@@ -1,0 +1,64 @@
+AL_NO_ERROR=0=No error
+AL_GEN_GLOBAL_KEY_FAILED=1=Generator global key failed
+AL_INVALID_VLAN_ID=2=Invalid vlan id
+AL_VLAN_ALREADY_EXIST=3=Vlan alread exist
+AL_VLAN_NAME_AND_VLANID_NEED=4=Vlan name and vlanid is needed
+AL_DB_INSERT_FAILED=5=Db insert falied
+AL_NO_DATA_FOUND=6=No data found
+AL_PORT_NOT_FOUND=7=Port not found
+AL_VLAN_NOT_FOUND=8=Vlan not found
+AL_API_NOT_IMPLEMENT=9=No implement
+AL_DB_FETCH_KEY_FAILED=10=Fetch key failed
+AL_DB_FETCH_VAL_FAILED=11=Fetch val failed
+AL_DB_ADD_FAILED=12=Add data failed
+AL_DB_DEL_FAILED=13=Del data failed
+AL_DB_OPEN_DB_FAILED=14=Open db file failed
+AL_DB_OPEN_CONF_DB_FAILED=15=Disable auto commit failed
+AL_FETCH_VLANS_FAILED=16=search vlan from db failed
+AL_VLAN_EXIST=17=Vlan already exist
+AL_VLAN_PORT_FETCH_FAILED=18=Fetch vlan port failed
+AL_ADD_PORT_TO_VLAN_FAILED=19=Add port to vlan failed
+AL_ENABLE_VPORT_FAILED=20=Enable vlan vport failed
+AL_FETCH_VLAN_INFO_FAILED=21=Fetch vlan id relation with vlanid
+AL_FETCH_VLAN_IP_FAILED=22=Fetch vlan ip
+AL_FETCH_ROUTE_FAILED=22=Fetch route info failed
+AL_ADD_IP_TO_VLAN_FAILED=23=Add ip to vlan failed
+AL_FETCH_GROUP_FAILED=24=Fetch group failed
+AL_ADD_GROUP_FAILED=25=Add group failed
+AL_FETCH_MEMBER_FAILED=26=Fetch member failed
+AL_ADD_MEMBER_FAILED=27=Add member failed
+AL_FETCH_FILTER_FAILED=28=Fetch vserver failed
+AL_ADD_FILTER_FAILED=29=Add vserver failed
+AL_INVALID_IP=30=Invalid ip
+AL_INTERVAL_ERROR=31=Interval error
+AL_MEMBER_PARAMENTS_ERROR=32=Member paraments(iptype, group, address, port) is needed
+AL_INVALID_IP_TYPE=33=Invalid ip type
+AL_INVALID_PORT=34=Invalid port
+AL_DB_BEGIN_TRANS_FAILED=35=Begin transaction failed
+AL_MEMBER_EXIST=36=Member already exist
+AL_DB_COMMIT_FAILED=37=DB commit failed
+AL_MEMBER_ID_NEEDED=38=Member id is needed
+AL_DB_SELECT_FAILED=39=DB select opt failed
+AL_OBJECT_EEXIST=40=Object doesn't exist
+AL_GROUP_NAME_NEEDED=41=Group name needed
+AL_DELETE_OBJ_FAILED=42=Del object failed
+AL_GROUP_DEL_FAILED=43=Group id or name exist
+AL_FILTER_PARAMENTS_ERROR=44=Vserver paraments(iptype, port_start, port_end, addr_start, addr_end, group, name, service_type) is needed
+AL_FILTER_TYPE_INVALID=45=Invalid service type
+AL_OBJECT_EXIST=46=Object exist
+AL_OBJECT_DUMPLICATE=47=Object dumplicate
+AL_KEYWORDS_MISS=48=Keywords miss
+AL_ROUTER_PARAMENTS_MISS=49=Router keywords miss
+AL_ROUTER_TYPE_UNKNOW=50=Can't judge route type
+AL_ROUTER_TYPE_INVALID=52=Router type invalid
+AL_ENOOBJ=53=Object not found
+AL_PROTO_TYPE_UNKNOWN=54=Unknown proto type
+AL_FILTER_TYPE_UNKNOWN=55=Unknown filter type(support type: llb/simple-tcp/tcp/http/glsb)
+AL_FILTER_DEL_FAILED=56=Delete filter failed
+AL_RESOURCE_BUSY=57=Resource referrence by others
+AL_GROUP_EEXIST=58=Group doesn't exist
+AL_GROUP_INFO_NEED=59=Group id or name needed
+AL_GROUP_ALREADY_EEXIST=60=Group already exist
+AL_LOW_MEMORY=61=Memory is not enough
+AL_PROTO_UNKNOW=62=Proto type unknow
+AL_DELETE_IP_FAILED=63=Delete ip failed

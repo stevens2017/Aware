@@ -1,0 +1,17 @@
+#!/bin/sh
+
+/sbin/modinfo -F filename uio > /dev/null 2>&1
+if [ $? -eq 0 ]; then
+    /sbin/modprobe uio
+fi
+
+/sbin/modinfo -F filename igb_uio > /dev/null 2>&1
+if [ $? -eq 0 ]; then
+    /sbin/modprobe igb_uio
+fi
+
+/sbin/modinfo -F filename rte_kni > /dev/null 2>&1
+if [ $? -eq 0 ]; then
+    /sbin/modprobe rte_kni  kthread_mode=multiple
+fi
+

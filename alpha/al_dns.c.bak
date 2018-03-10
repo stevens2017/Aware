@@ -1,0 +1,136 @@
+#include <stdio.h>
+#include <string.h>
+#include <rte_memzone.h>
+#include "al_dns.h"
+#include "al_member.h"
+#include "al_common.h"
+#include "al_alg.h"
+#include "al_log.h"
+#include "al_to_api.h"
+#include "al_tree.h"
+#include "al_errmsg.h"
+
+typedef struct{
+    al_rbtree_t           rbtree;
+    al_rbtree_node_t  sentinel;
+}al_dns_tree;
+
+static al_dns_tree g_dns;
+static rte_rwlock_t g_dns_lock;
+
+int al_dns_init(void){
+    memset(&g_dns, '\0', sizeof(g_dns));
+    ngx_rbtree_init(&g_dns.rbtree, &g_dns.sentinel, al_rbtree_insert_value);
+    rte_rwlock_init(&g_dns_lock);
+    return 0;
+}
+
+int al_dns_insert(uint32_t fid, uint32_t did, al_string* d){
+    al_dns_t* dns;
+    size_t  size;
+    uintptr_t dkey;
+    al_rbtree_node_t* node;
+    int rc;
+
+    rc = -1;
+    rte_rwlock_write_lock(&g_dns_lock);
+
+    node=al_rbtree_lookup(g_dns.rbtree, fid);
+    if( !node ){
+        size = offsetof(al_rbtree_node_t, color) + offsetof(al_dns_t, data);
+        node=al_malloc(size);
+        if( node == NULL ){
+            rc=-1;
+            rte_rwlock_write_unlock(&g_dns_lock);
+            return rc;
+        }else{
+            node->key = fid;
+            al_rbtree_insert(&g_dns.rbtree, node);
+            dns=(al_dns_t*)&node->color;
+            art_tree_init(&dns->domain);
+        }
+    }else{
+        dns=(al_dns_t*)&node->color;
+    }
+    
+    //bug insert failed need process
+    al_art_insert(&dns->domain, d->data, d->len, did);
+    rte_rwlock_write_unlock(&g_dns_lock);
+
+    return rc;
+}
+
+int al_dns_lookup(uint32_t fid, al_string* dstr, al_dns_record* g){
+
+    al_rbtree_node_t* node;
+    al_dns_t* d;
+    int rc;
+    al_dns_record* ptr;
+
+    rc=-1;
+    rte_rwlock_read_lock(&g_dns_lock);
+    node=al_rbtree_lookup(g_dns.root, fid);
+    if( node ){
+        d = *(al_dns_t*)&node->color;
+        ptr=al_domain_search(&d->domain, dstr->data, dstr->len);
+        if( ptr ){
+            rc=0;
+            *did=(uintptr_t)ptr & 0xFFFFFFFF;
+        }
+    }
+    rte_rwlock_read_unlock(&g_dns_lock);
+    return rc;
+}
+
+int al_dns_delete(uint32_t fid, al_string* d){
+    uintptr_t key=fid;
+    al_rbtree_node_t* node;
+    al_dns_t* d;
+    al_dns_record* ptr;
+    int rc;
+    
+    rc=-1;
+    rte_rwlock_write_lock(&g_dns_lock);
+    node=al_rbtree_lookup(&g_dns.rbstree, fid);
+    if( node ){
+        ptr=NULL;
+        rc=0;
+        d=(al_dns_t*)&node->color;
+        ptr=art_delete(&d->domain, d->data, d->len);
+        if(ptr){
+            errno=AL_ENOOBJ;
+            rc = -1;
+        }
+        al_rbtree_delete(&g_dns.rbtree, node);
+        al_free(ptr);
+    }else{
+        errno=AL_ENOOBJ;
+        rc = -1;
+    }
+    rte_rwlock_write_unlock(&g_dns_lock);
+    return rc;
+}
+
+int al_filter_dns_delete(uint32_t fid){
+    uintptr_t key=fid;
+    al_rbtree_node_t* node;
+    al_dns_t* d;
+    int rc;
+    
+    rc=-1;
+    rte_rwlock_write_lock(&g_dns_lock);
+    node=al_rbtree_lookup(&g_dns.rbstree, fid);
+    if( node ){
+        d=(al_dns_t*)&node->color;
+        art_destroy(&d->domain);
+        al_rbtree_delete(&g_dns.rbtree, node);
+        rc=0;
+    }else{
+        errno=AL_ENOOBJ;
+        rc = -1;
+    }
+    rte_rwlock_write_unlock(&g_dns_lock);
+    
+    return rc;
+}
+

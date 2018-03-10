@@ -1,0 +1,13 @@
+[Unit]
+Description=Init evn for loadbalance
+Before=alpha.target
+
+[Service]
+Type=forking
+Environment=LANG=C
+ExecStart=/usr/sbin/alpha_init.sh
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
+
